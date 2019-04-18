@@ -1,14 +1,47 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="success">
     <ion-title>
-      Ionic Blank
+      Qiita記事 一覧
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
-  </div>
+<ion-content class="masters" no-padding>
+
+  <!-- Default Refresher -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <input type="text" class="searchBox" [(ngModel)]="search">
+  <ion-button (click)="loadFilter()" color="success">検索</ion-button>
+
+  <ion-card class="card-item-page" *ngFor="let qiitaItem of qiitaItems" (click)="onArticleClicked(qiitaItem)">
+    <ion-item>
+      <p class="item-date"><ion-icon name="calendar"></ion-icon> {{ qiitaItem.created_at | date:"yyyy/MM/dd HH:mm" }} </p>
+      <ion-avatar>
+        <!--<img src="{{ qiitaItem.user.profile_image_url }}">-->
+      </ion-avatar>
+    </ion-item>
+
+    <ion-card-content>
+      <h2 class="item-title">タイトル: {{ qiitaItem.title }}</h2>
+      <p class="item-tags">タグ一覧: {{ getTagList(qiitaItem.tags) }}</p>
+    </ion-card-content>
+
+    <ion-row class="card-row">
+      <ion-col>
+        <div><ion-icon name="heart"></ion-icon>{{ qiitaItem.likes_count }}</div>
+      </ion-col>
+      <ion-col>
+        <div><ion-icon name="chatboxes"></ion-icon>{{ qiitaItem.comments_count }}</div>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadOldData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>
