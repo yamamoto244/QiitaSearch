@@ -13,8 +13,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <input type="text" class="searchBox" [(ngModel)]="search">
-  <ion-button (click)="loadFilter()" color="success">検索</ion-button>
+  <ion-searchbar animated color="success" [(ngModel)]="search" debounce="500" (ionInput)="loadFilter()"></ion-searchbar>
 
   <ion-card class="card-item-page" *ngFor="let qiitaItem of qiitaItems" (click)="onArticleClicked(qiitaItem)">
     <ion-item>

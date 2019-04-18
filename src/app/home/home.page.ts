@@ -48,7 +48,9 @@ export class HomePage {
   }
 
   loadFilter() {
-    this.qiitaItems = this.qiitaItems.filter(item => item.title.includes(this.search));
+    if (this.search.trim() !== '') {
+      this.qiitaItems = this.qiitaItems.filter(item => item.title.includes(this.search));
+    }
   }
 
   doRefresh($event: any) {
